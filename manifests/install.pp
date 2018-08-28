@@ -4,8 +4,24 @@ class redmine::install {
   # Install dependencies
 
   $generic_packages = [ 'make', 'gcc' ]
-  $debian_packages  = [ 'libmysql++-dev', 'libmysqlclient-dev', 'libmagickcore-dev', 'libmagickwand-dev', 'ruby-dev', 'libpq-dev', 'imagemagick' ]
-  $redhat_packages  = [ 'postgresql-devel', 'sqlite-devel', 'ImageMagick-devel', 'ruby-devel', $::redmine::params::mysql_devel ]
+  # TODO: Check for Debian release and use libmariadbclient-dev-compat instead of libmysqlclient-dev
+  $debian_packages  = [
+    'libmysql++-dev',
+    #'libmysqlclient-dev',
+    'libmariadbclient-dev-compat',
+    'libmagickcore-dev',
+    'libmagickwand-dev',
+    'ruby-dev',
+    'libpq-dev',
+    'imagemagick'
+  ]
+  $redhat_packages  = [
+    'postgresql-devel',
+    'sqlite-devel',
+    'ImageMagick-devel',
+    'ruby-devel',
+    $::redmine::params::mysql_devel
+  ]
 
   case $::osfamily {
     'Debian':   { $packages = concat($generic_packages, $debian_packages) }
